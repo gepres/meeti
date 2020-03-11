@@ -1,0 +1,49 @@
+{
+  "name": "meeti",
+  "version": "1.0.0",
+  "description": "Proyecto meeti",
+  "main": "index.js",
+  "scripts": {
+    "dev": "cross-env NODE_ENV=development nodemon src/index.js",
+    "start": "cross-env NODE_ENV=production node src/index.js",
+    "serve": "concurrently \"npm run dev \" \" npm run watch\" ",
+    "watch": "webpack --w --mode development"
+  },
+  "author": "gepres <genaropretill@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/core": "^7.8.7",
+    "@babel/preset-env": "^7.8.7",
+    "babel-loader": "^8.0.6",
+    "nodemon": "^2.0.2",
+    "webpack": "^4.42.0",
+    "webpack-cli": "^3.3.11"
+  },
+  "dependencies": {
+    "axios": "^0.19.2",
+    "bcrypt": "^4.0.1",
+    "concurrently": "^5.1.0",
+    "connect-flash": "^0.1.1",
+    "cookie-parser": "^1.4.4",
+    "cross-env": "^7.0.1",
+    "dotenv": "^8.2.0",
+    "ejs": "^3.0.1",
+    "express": "^4.17.1",
+    "express-ejs-layouts": "^2.5.0",
+    "express-session": "^1.17.0",
+    "express-validator": "^6.4.0",
+    "leaflet-geosearch": "^2.7.0",
+    "moment": "^2.24.0",
+    "multer": "^1.4.2",
+    "nodemailer": "^6.4.4",
+    "passport": "^0.4.1",
+    "passport-local": "^1.0.0",
+    "pg": "^7.18.2",
+    "pg-hstore": "^2.3.3",
+    "sequelize": "^5.21.5",
+    "shortid": "^2.2.15",
+    "slug": "^2.1.1",
+    "sweetalert2": "^9.10.0",
+    "uuid": "^7.0.2"
+  }
+}
