@@ -20,7 +20,7 @@ require('./models/Meeti')
 
 // settings
 app.set('port', process.env.PORT || 3000);
-
+app.set('host', process.env.HOST || '0.0.0.0');
 
 // static files & views engine || en handlebars se puede poner al ultimo pero  ejs antes de routes
 app.set('view engine','ejs');
