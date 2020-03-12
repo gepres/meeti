@@ -6,7 +6,7 @@
       <div class="info-autor">
         <% if(meeti.usuario.imagen){ %> 
           <div class="imagen">
-            <img src="/uploads/perfiles/<%= meeti.usuario.imagen %>" alt="">
+            <img src="<%= meeti.usuario.imagen %>" alt="">
           </div>
         <% }else{ %>
           <div class="imagen">
@@ -51,7 +51,7 @@
       <div class="descripcion">
         <!-- imagen meeti -->
         <% if( meeti.grupo.imagen){ %> 
-          <img src="/uploads/grupos/<%= meeti.grupo.imagen %> " alt="">
+          <img src="<%= meeti.grupo.imagen %> " alt="">
         <% }else{ %>
           <img src="/img/meeti.jpg" alt="">
         <% } %>  
@@ -73,7 +73,7 @@
             <div class="comentario">
               <div class="imagen">
                 <%if(comentario.usuario.imagen){ %>
-                  <img src="/uploads/perfiles/<%= comentario.usuario.imagen %>" alt="">
+                  <img src="<%= comentario.usuario.imagen %>" alt="">
                 <% } %>  
               </div>
               <div class="texto">
@@ -144,7 +144,7 @@
       <%= //JSON.stringify(meeti) %> 
       <div class="card">
         <% if( meeti.grupo.imagen){ %> 
-          <img src="/uploads/grupos/<%= meeti.grupo.imagen %> " alt="">
+          <img src="<%= meeti.grupo.imagen %> " alt="">
         <% }else{ %>
           <img src="/img/meeti.jpg" alt=""> 
         <% } %>  
@@ -158,7 +158,7 @@
           <div class="info-autor">
             <% if(meeti.usuario.imagen){ %> 
               <div class="imagen">
-                <img src="/uploads/perfiles/<%= meeti.usuario.imagen %>" alt="">
+                <img src="<%= meeti.usuario.imagen %>" alt="">
               </div>
             <% }else{ %> 
             <div class="imagen"></div>

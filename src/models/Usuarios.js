@@ -9,7 +9,11 @@ const Usuarios = db.define('usuarios', {
       autoIncrement: true
   },
   nombre : Sequelize.STRING(60),
-  imagen : Sequelize.STRING(60),
+  imagen : Sequelize.STRING,
+  public_id:{
+    type:Sequelize.STRING,
+    unique:true
+  },
   descripcion:Sequelize.TEXT,
   email: {
       type: Sequelize.STRING(30),

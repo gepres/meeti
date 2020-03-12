@@ -16,6 +16,7 @@
 ## Caracteristas
 
 * nodejs v12.13.1
+* cloudinary
 * axios
 * ejs
 
@@ -23,5 +24,8 @@
 ### Datos adicionales
 
 si no puedes ejecutar el model meeti - es por falta postgis en postgres
-asi abre un query y escribe 'CREATE EXTENSION postgis;'
+asi que abre un query y escribe 'CREATE EXTENSION postgis;'
 si te sale error instala postgis deacuerdo a la version de postgres
+
+
+en la rama dev esta el repositiorio para almenace en local

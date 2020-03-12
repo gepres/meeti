@@ -5,7 +5,7 @@
     <% meetis.forEach(meeti=>{ %>
       <div class="card">
         <% if(meeti.grupo.imagen){ %> 
-        <img src="/uploads/grupos/<%= meeti.grupo.imagen %>">
+        <img src="<%= meeti.grupo.imagen %>">
         <% }else{ %>
           <img src="/img/meeti.jpg" alt="">
         <% } %>  
@@ -19,7 +19,7 @@
           <div class="info-autor">
             <div class="imagen">
               <% if(meeti.usuario.imagen){ %>
-                <img src="/uploads/perfiles/<%= meeti.usuario.imagen %>" alt="">
+                <img src="<%= meeti.usuario.imagen %>" alt="">
               <% } %>  
             </div>
             <div class="informacion">

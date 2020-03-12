@@ -4,7 +4,10 @@ const { v4: uuidv4 } = require('uuid');
 const { check,body, validationResult } = require('express-validator');
 const multer = require('multer')
 const shortid = require('shortid')
-const fs = require('fs')
+// const fs = require('fs')
+const cloudinary = require('cloudinary')
+const fs = require('fs-extra');
+
 
 const configuracionMulter = {
   limits:{fileSize:2000000},
@@ -29,6 +32,11 @@ const configuracionMulter = {
 }
 const upload = multer(configuracionMulter).single('imagen');
 
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET
+})
 
 module.exports = { 
   formNuevoGrupo: async(req,res) => {
@@ -45,9 +53,13 @@ module.exports = {
     // almacena el usuario autentico con el creador del grupo
     grupo.usuarioId = req.user.id
     grupo.id = uuidv4()
+    const result = await cloudinary.v2.uploader.upload(req.file.path,{
+      folder: 'meeti/grupos'
+    });
     // leer la imagen
     if(req.file){
-      grupo.imagen = req.file.filename;
+      grupo.imagen = result.url;
+      grupo.public_id = result.public_id
     }
     
     // grupo.categoriaId = req.body.categoria
@@ -61,6 +73,7 @@ module.exports = {
     }
     try {
       // almacenar en la base de datos
+      await fs.unlink(req.file.path)
       await Grupos.create(grupo)
       req.flash('exito','Se ha creado el Grupo Correctamente')
       res.redirect('/administracion')
@@ -167,6 +180,9 @@ module.exports = {
       res.redirect('/administracion')
       return next()
     }
+    const result = await cloudinary.v2.uploader.upload(req.file.path,{
+      folder: 'meeti/grupos'
+    });
     // verificar que el archivo sea nuevo
     // if(req.file){
     //   console.log(req.file.filename);
@@ -177,25 +193,20 @@ module.exports = {
     //   console.log(grupo.imagen)
     // }
 
+
     // si hay imagen anterior y nueva
     if(req.file && grupo.imagen){
-      const imagenAnteriorPath = __dirname + `/../public/uploads/grupos/${grupo.imagen}`;
-      // console.log(imagenAnteriorPath);
-      // eliminar archivo con filesystem(fs)
-      fs.unlink(imagenAnteriorPath,(error) => {
-        if(error) {
-          console.log(error);
-        }
-        return;
-      })
+      await cloudinary.v2.uploader.destroy(grupo.public_id)
     }
     // si hay una imagen nueva , la guardamos
     if(req.file){
-      grupo.imagen = req.file.filename;
+      grupo.imagen = result.url;
+      grupo.public_id = result.public_id
     }
 
     // guardar en la DB
     await grupo.save()
+    await fs.unlink(req.file.path)
     req.flash('exito','Cambios almacenados Correctamente')
     res.redirect('/administracion')
   },
@@ -221,13 +232,7 @@ module.exports = {
     // console.log(grupo.imagen);
     // si hay una imagen eliminarla
     if(grupo.imagen){
-      const imagenAnteriorPath = __dirname + `/../public/uploads/grupos/${grupo.imagen}`;
-      fs.unlink(imagenAnteriorPath,(error) => {
-        if(error) {
-          console.log(error);
-        }
-        return;
-      })
+      await cloudinary.v2.uploader.destroy(grupo.public_id)
     }
     // eliminar el grupo
     await Grupos.destroy({where:{

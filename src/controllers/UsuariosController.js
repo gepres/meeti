@@ -3,7 +3,9 @@ const { check,body, validationResult } = require('express-validator');
 const enviarEmail = require('../handlers/email')
 const multer = require('multer')
 const shortid = require('shortid')
-const fs = require('fs')
+// const fs = require('fs')
+const cloudinary = require('cloudinary')
+const fs = require('fs-extra');
 
 const configuracionMulter = {
   limits:{fileSize:2000000},
@@ -28,7 +30,11 @@ const configuracionMulter = {
 }
 const upload = multer(configuracionMulter).single('imagen');
 
-
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET
+})
 
 module.exports = { 
   formCrearCuenta: (req,res) => {
@@ -188,24 +194,26 @@ module.exports = {
   },
   imagenPerfil:async(req,res)=>{
     const usuario = await Usuarios.findByPk(req.user.id);
-
+    const result = await cloudinary.v2.uploader.upload(req.file.path,{
+      folder: 'meeti/perfiles'
+    });
+    // console.log(req.file.path);
+    // console.log(req.file.filename);
+    
     // si hay imagen anterior y nueva
     if(req.file && usuario.imagen){
-      const imagenAnteriorPath = __dirname + `/../public/uploads/perfiles/${grupo.imagen}`;
-      fs.unlink(imagenAnteriorPath,(error) => {
-        if(error) {
-          console.log(error);
-        }
-        return;
-      })
+      await cloudinary.v2.uploader.destroy(usuario.public_id)
     }
+
     // si hay una imagen nueva , la guardamos
     if(req.file){
-      usuario.imagen = req.file.filename;
+      usuario.imagen = result.url;
+      usuario.public_id = result.public_id
     }
 
     // guardar en la DB
     await usuario.save()
+    await fs.unlink(req.file.path)
     req.flash('exito','Cambios almacenados Correctamente')
     res.redirect('/administracion')
   },
