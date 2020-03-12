@@ -39,6 +39,7 @@
     <% if(grupos.length){ %> 
       <ul>
         <% grupos.forEach(grupo => { %> 
+          <%= //JSON.stringify(grupo) %> 
         <li>
           <div class="informacion-admin">
             <h3><%= grupo.nombre %> </h3>
@@ -57,6 +58,18 @@
   </div>
   <!-- <div class="seccion-admin">
     <h2>Meeti's que Asistiras</h2>
+    <% if(meetiAsistir.length){ %>
+      <ul>
+      <% meetiAsistir.forEach(meet => { %>
+        <%= JSON.stringify(meet) %> 
+        <li>
+          <a href="/meeti/<%= meet.slug %>"><%= meet.titulo %> </a>
+        </li>
+      <% }) %> 
+    </ul>
+    <% }else{ %>
+      <p>Todavía, no estas Asistiendo a ningún meeti</p>
+    <% } %> 
   </div> -->
   <div class="seccion-admin">
     <h2>Anteriores Meeti's</h2><!-- Meeti's -->
